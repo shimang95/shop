@@ -59,8 +59,7 @@ export default {
             message: data.meta.msg,
             type: 'success'
           })
-          sessionStorage.setItem('id', data.data.id)
-          sessionStorage.setItem('username', data.data.username)
+          localStorage.setItem('token', data.data.token)
           this.$router.push('/')
           // this.$router.push({name: Index})
         } else {
