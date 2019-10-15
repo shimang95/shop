@@ -31,7 +31,7 @@ export default {
       rules: {
         username: [
           { required: true, message: '请输入用户名', trigger: ['blur', 'change'] },
-          { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: ['blur', 'change'] }
+          { min: 2, max: 10, message: '长度在 2 到 5 个字符', trigger: ['blur', 'change'] }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: ['blur', 'change'] },
@@ -57,7 +57,8 @@ export default {
         if (data.meta.status === 200) {
           this.$message({
             message: data.meta.msg,
-            type: 'success'
+            type: 'success',
+            duration: 2000
           })
           localStorage.setItem('token', data.data.token)
           this.$router.push('/')
