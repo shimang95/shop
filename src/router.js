@@ -2,6 +2,14 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from './page/Index'
 import Login from './page/Login'
+import User from './components/user/User'
+import Right from './components/right/Right'
+
+// 解决vue-router的版本问题引起的路由不能一直点击的bug
+const originalPush = Router.prototype.push
+Router.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 Vue.use(Router)
 
@@ -14,7 +22,11 @@ const router = new Router({
     {
       path: '/index',
       name: 'index',
-      component: Index
+      component: Index,
+      children: [
+        { path: '/users', component: User },
+        { path: '/rights', component: Right }
+      ]
     },
     {
       path: '/login',

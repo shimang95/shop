@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 
 export default {
   data () {
@@ -44,32 +43,33 @@ export default {
     resetForm (formName) {
       this.$refs[formName].resetFields()
     },
-    submitForm (formName) {
-      this.$refs[formName].validate(valid => {
-        if (!valid) return false
+    async submitForm (formName) {
+      try {
+        await this.$refs[formName].validate()
         this.getInfo()
-      })
+      } catch (e) {
+
+      }
     },
-    getInfo () {
-      axios.post('http://localhost:8888/api/private/v1/login', this.ruleForm).then(res => {
-        const data = res.data
-        console.log(data.data)
-        if (data.meta.status === 200) {
-          this.$message({
-            message: data.meta.msg,
-            type: 'success',
-            duration: 2000
-          })
-          localStorage.setItem('token', data.data.token)
-          this.$router.push('/')
-          // this.$router.push({name: Index})
-        } else {
-          this.$message({
-            message: data.meta.msg,
-            type: 'warning'
-          })
-        }
-      })
+    async getInfo () {
+      const res = await this.$axios.post('login', this.ruleForm)
+      const { meta: { msg, status }, data } = res
+      // console.log(msg, status, data)
+      if (status === 200) {
+        this.$message({
+          message: msg,
+          type: 'success',
+          duration: 2000
+        })
+        localStorage.setItem('token', data.token)
+        this.$router.push('/')
+      } else {
+        this.$message({
+          message: msg,
+          type: 'warning',
+          duration: 2000
+        })
+      }
     }
   }
 }

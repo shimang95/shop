@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-parsing-error */
 <template>
     <el-container class="index">
       <!-- header 部分 -->
@@ -15,15 +16,43 @@
       </el-header>
       <el-container>
         <!-- 侧边栏 -->
-        <el-aside width="200px">Aside</el-aside>
+        <el-aside width="200px">
+          <el-menu router
+          unique-opened
+          default-active="2"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+
+            <el-submenu  v-for="item in menusInfo" :key="item.id" :index="item.path">
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <span>{{item.authName}}</span>
+              </template>
+
+                <el-menu-item v-for="submenus in item.children" :key="submenus.id" :index="item.path">
+                  <i class="el-icon-menu"></i>
+                  {{submenus.authName}}
+                </el-menu-item>
+            </el-submenu>
+
+          </el-menu>
+        </el-aside>
         <!-- 主体内容 -->
-        <el-main>Main</el-main>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      menusInfo: []
+    }
+  },
   methods: {
     logout () {
       this.$confirm('亲，您忍心退出吗？', '温馨提示', {
@@ -38,21 +67,20 @@ export default {
           type: 'info'
         })
       })
+    },
+    async getMenus () {
+      const { meta: { status }, data } = await this.$axios.get('menus')
+      if (status === 200) {
+        this.menusInfo = data
+      }
+      // console.log(msg)
+      // console.log(status)
+      // console.log(data)
     }
+  },
+  created () {
+    this.getMenus()
   }
-
-/*  methods: {
-    // check () {
-    //   if (!sessionStorage.getItem('token')) {
-    //     sessionStorage.clear()
-    //     this.$router.push('/login')
-    //   }
-    // }
-  }
-
-  // mounted () {
-  //   // this.check()
-  // } */
 }
 </script>
 
@@ -92,7 +120,15 @@ export default {
     }
   }
   .el-aside{
-  background-color: #545c64;
+    background-color: #545c64;
+    .el-menu{
+      border: 0;
+      .el-menu-item-group{
+        .el-menu-item-group__title{
+          padding: 0;
+        }
+      }
+    }
   }
   .el-main{
   background-color: #ecf0f1;
