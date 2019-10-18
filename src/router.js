@@ -4,6 +4,7 @@ import Index from './page/Index'
 import Login from './page/Login'
 import User from './components/user/User'
 import Right from './components/right/Right'
+import Roles from './components/right/Roles'
 
 // 解决vue-router的版本问题引起的路由不能一直点击的bug
 const originalPush = Router.prototype.push
@@ -25,7 +26,8 @@ const router = new Router({
       component: Index,
       children: [
         { path: '/users', component: User },
-        { path: '/rights', component: Right }
+        { path: '/rights', component: Right },
+        { path: '/roles', component: Roles }
       ]
     },
     {

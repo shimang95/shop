@@ -19,7 +19,6 @@
         <el-aside width="200px">
           <el-menu router
           unique-opened
-          default-active="2"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
@@ -30,7 +29,7 @@
                 <span>{{item.authName}}</span>
               </template>
 
-                <el-menu-item v-for="submenus in item.children" :key="submenus.id" :index="item.path">
+                <el-menu-item v-for="submenus in item.children" :key="submenus.id" :index="submenus.path">
                   <i class="el-icon-menu"></i>
                   {{submenus.authName}}
                 </el-menu-item>
