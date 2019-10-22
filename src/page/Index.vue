@@ -21,6 +21,7 @@
           unique-opened
           background-color="#545c64"
           text-color="#fff"
+          :default-active="defaultActive"
           active-text-color="#ffd04b">
 
             <el-submenu  v-for="item in menusInfo" :key="item.id" :index="item.path">
@@ -47,6 +48,11 @@
 
 <script>
 export default {
+  computed: {
+    defaultActive () {
+      return this.$route.path.slice(1)
+    }
+  },
   data () {
     return {
       menusInfo: []
